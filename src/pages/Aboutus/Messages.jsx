@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import messagesData from '../../datas/Messages/messages';
 import { FaQuoteLeft, FaQuoteRight } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+import FrontImage from '../../components/FrontImage';
 
 // Animation variants for scroll direction
 const fadeInUp = {
@@ -19,129 +20,36 @@ const scaleIn = {
 
 const Messages = () => {
   const parallaxRef = useRef(null);
-  const [scrollDir, setScrollDir] = useState('down');
+  const [scrollDir, setScrollDir] = useState('down');``
   const lastY = useRef(0);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (parallaxRef.current) {
-        const scrollY = window.scrollY;
-        parallaxRef.current.style.transform = `translateY(${scrollY * 0.4}px)`;
-      }
-      const currentY = window.scrollY;
-      if (currentY > lastY.current) setScrollDir('down');
-      else if (currentY < lastY.current) setScrollDir('up');
-      lastY.current = currentY;
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   // Helper to pick animation variant based on scroll direction
   const getFadeVariant = () => (scrollDir === 'down' ? fadeInUp : fadeInDown);
 
   return (
+    <>
+    {/* Stylish hero section */}
+      {/* Front Image */}
+  
+      <FrontImage
+        src={messagesData.frontImage}
+        alt={messagesData.title}
+        title={messagesData.title}
+      
+        description="Insights and vision from the leadership guiding our journey"
+      />
     <motion.div
-      className="min-h-screen bg-gradient-to-br from-[#f8fafc] via-[#e0e7ff] to-[#f0fdfa] relative overflow-hidden"
+      className="min-h-screen bg-gradient-to-br from-[#f8fafc] via-[#e0e7ff] to-[#f0fdfa] relative overflow-hidden "
       initial="hidden"
       animate="visible"
       variants={getFadeVariant()}
       transition={{ duration: 0.7 }}
     >
       {/* Animated decorative elements */}
-      <motion.div
-        className="absolute top-20 left-10 w-40 h-40 bg-[#F1592D] opacity-20 rounded-full blur-2xl z-0"
-        animate={{
-          x: [0, 40, 0],
-          y: [0, 30, 0],
-          scale: [1, 1.18, 1]
-        }}
-        transition={{
-          duration: 18,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-      />
-      <motion.div
-        className="absolute top-40 right-20 w-60 h-60 bg-[#003044] opacity-20 rounded-full blur-2xl z-0"
-        animate={{
-          x: [0, -50, 0],
-          y: [0, 40, 0],
-          scale: [1, 1.1, 1]
-        }}
-        transition={{
-          duration: 22,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-      />
-      <motion.div
-        className="absolute bottom-0 left-1/4 w-80 h-32 bg-[#F1592D] opacity-10 rounded-full blur-3xl z-0"
-        animate={{
-          x: [0, 30, 0],
-          scale: [1, 1.12, 1]
-        }}
-        transition={{
-          duration: 25,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-      />
+     
 
-      {/* Stylish hero section */}
-      <motion.div
-        className="relative h-[70vh] overflow-hidden"
-        initial="hidden"
-        animate="visible"
-        variants={getFadeVariant()}
-        transition={{ duration: 1, type: "spring" }}
-      >
-        <div className="absolute inset-0 bg-black/40 z-10"></div>
-        {/* Parallax background image */}
-        <div ref={parallaxRef} className="absolute inset-0 scale-110">
-          <img
-            src={messagesData.frontImage}
-            alt={messagesData.title}
-            className="w-full h-full object-cover object-center"
-            loading="lazy"
-          />
-        </div>
-        {/* Animated clip path overlay */}
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-t from-[#003044]/60 to-transparent z-20"
-          initial={{ clipPath: "polygon(0 100%, 100% 100%, 100% 100%, 0 100%)" }}
-          animate={{ clipPath: "polygon(0 85%, 100% 70%, 100% 100%, 0% 100%)" }}
-          transition={{ duration: 1.2, ease: "easeInOut" }}
-        ></motion.div>
-        {/* Title content with animation */}
-        <motion.div
-          className="absolute z-30 bottom-0 left-0 right-0 p-12 text-white"
-          initial={{ y: 100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1 }}
-        >
-          <div className="container mx-auto">
-            <motion.h1
-              className="text-4xl md:text-6xl font-extrabold leading-tight mb-4 tracking-tight drop-shadow-lg"
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.8 }}
-            >
-              <span className="inline-block pb-2 border-b-4 border-[#F1592D] bg-gradient-to-r from-[#F1592D]/30 to-[#003044]/30 px-2 rounded">
-                {messagesData.title}
-              </span>
-            </motion.h1>
-            <motion.p
-              className="text-lg md:text-xl text-gray-100 max-w-2xl"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.7 }}
-            >
-              Insights and vision from the leadership guiding our journey
-            </motion.p>
-          </div>
-        </motion.div>
-      </motion.div>
+      
 
       {/* Breadcrumb Section - Modern Style */}
       <motion.div
@@ -164,8 +72,7 @@ const Messages = () => {
       <motion.div
         className="backdrop-blur-md bg-white/80 mx-4 sm:mx-20 my-4 mt-10 p-8 rounded-3xl shadow-2xl relative border border-[#e0e7ff]"
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.15 }}
+        animate="visible"
         variants={getFadeVariant()}
         transition={{ duration: 0.8, type: 'spring', stiffness: 60, damping: 18 }}
       >
@@ -175,13 +82,13 @@ const Messages = () => {
         <div className="absolute bottom-0 left-0 w-16 h-16 border-b-4 border-l-4 border-[#003044] rounded-bl-3xl"></div>
         <div className="absolute bottom-0 right-0 w-16 h-16 border-b-4 border-r-4 border-[#003044] rounded-br-3xl"></div>
 
-        {/* Chairperson Message */}
+        {/* Chairperson Message - initial animation only */}
         <motion.div
           className="flex flex-col lg:flex-row items-center gap-8 relative"
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          animate="visible"
           variants={scaleIn}
+          transition={{ duration: 0.8, type: 'spring', stiffness: 80 }}
         >
           <div className="flex-1 lg:pr-20">
             <h3 className="text-2xl font-bold text-black mb-4 relative">
@@ -222,7 +129,7 @@ const Messages = () => {
           <div className="h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent w-1/3"></div>
         </div>
 
-        {/* Managing Director Message */}
+        {/* Managing Director Message - scroll animation */}
         <motion.div
           className="flex flex-col-reverse lg:flex-row items-center gap-8 mt-10"
           initial="hidden"
@@ -267,7 +174,7 @@ const Messages = () => {
           <div className="h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent w-1/3"></div>
         </div>
 
-        {/* CEO Message */}
+        {/* CEO Message - scroll animation */}
         <motion.div
           className="flex flex-col lg:flex-row items-center gap-8"
           initial="hidden"
@@ -325,6 +232,8 @@ const Messages = () => {
         }}
       ></motion.div>
     </motion.div>
+    </>
+    
   );
 };
 

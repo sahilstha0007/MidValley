@@ -1,6 +1,7 @@
 import React from 'react';
 import { partnerData } from '../../datas/Partners';
 import { motion } from 'framer-motion';
+import FrontImage from '../../components/FrontImage'; // <-- Add this import
 
 // Animation variants
 const fancyFadeIn = {
@@ -68,26 +69,14 @@ const Partners = () => {
   } = partnerData;
 
   return (
-    <div className="bg-gray-100">
+    <div className="bg-gray-100 overflow-hidden">
       {/* Front Image */}
-      <motion.div
-        className="relative"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: false, amount: 0.2 }}
-        variants={fancyFadeIn}
-      >
-        <motion.img
-          src={frontImage}
-          alt={title}
-          className="w-full max-h-[40vh] sm:max-h-[50vh] md:max-h-[60vh] lg:max-h-[70vh] xl:max-h-[80vh] object-cover object-center"
-          loading="lazy"
-          variants={fancyImageIn}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.2 }}
-        />
-      </motion.div>
+      <FrontImage
+        src={frontImage}
+        alt={title}
+        title={title}
+        description="Strategic collaborations that enhance our educational offerings and expand opportunities for our students"
+      />
 
       {/* Breadcrumb Section */}
       <motion.div

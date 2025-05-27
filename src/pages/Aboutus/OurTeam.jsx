@@ -1,6 +1,7 @@
 import React from 'react';
 import { teamMembers } from '../../datas/ourTeam';
 import { motion } from 'framer-motion';
+import FrontImage from '../../components/FrontImage';
 
 // Animation variants
 const fadeInUp = {
@@ -23,32 +24,13 @@ const OurTeam = () => {
   return (
     <div className="bg-gray-100">
       {/* Page Header */}
-      <motion.div
-        className="relative"
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, type: 'spring', stiffness: 60, damping: 18 }}
-      >
-        <motion.img
-          src="/image/team/team-banner.webp"
-          alt="Our Team"
-          className="w-full h-[40vh] sm:h-[50vh] md:h-[60vh] lg:h-[70vh] xl:h-[80vh] object-cover object-center"
-          loading="lazy"
-          initial={{ scale: 1.05, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1 }}
-        />
-        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <motion.h1
-            className="text-4xl font-bold text-white"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.7, type: 'spring' }}
-          >
-            Our Team
-          </motion.h1>
-        </div>
-      </motion.div>
+      <FrontImage
+      src={"/image/team/team-banner.webp"}
+      alt={"Our Team"}
+      title={"Our Team"}
+      description="Meet the dedicated professionals who bring expertise and passion to our educational mission"
+      />
+     
 
       {/* Breadcrumb Section */}
       <motion.div

@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import FrontImage from '../../../components/FrontImage';
 
 const heroImgVariants = {
   hidden: { opacity: 0, scale: 1.08 },
@@ -27,27 +28,25 @@ const svgAnim = {
 };
 
 const HeroSection = ({ frontImage, title, isCulinary, isPatisserie, isBarista }) => {
+  const subtitle = "Explore and connect with our vibrant student community";
+
   return (
     <div className="relative">
-      <motion.img
+      <FrontImage 
         src={frontImage}
         alt={title}
-        className="w-full max-h-[40vh] sm:max-h-[50vh] md:max-h-[60vh] lg:max-h-[70vh] xl:max-h-[80vh] object-cover object-center"
-        loading="lazy"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: false, amount: 0.2 }}
-        variants={heroImgVariants}
+        title={title}
+        description={subtitle}
       />
+      
       {/* Hero section floating elements based on course type */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-20">
         {isCulinary && (
           <>
             <motion.div
               className="absolute top-[15%] right-[10%] w-16 h-16"
               initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.2 }}
+              animate="visible"
               variants={svgAnim}
               transition={{ duration: 1, delay: 0.2 }}
             >
@@ -64,8 +63,7 @@ const HeroSection = ({ frontImage, title, isCulinary, isPatisserie, isBarista })
             <motion.div
               className="absolute bottom-[20%] left-[7%] w-20 h-20"
               initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.2 }}
+              animate="visible"
               variants={svgAnim}
               transition={{ duration: 1.2, delay: 0.4, repeat: Infinity, repeatType: "reverse" }}
               style={{ animationDuration: '5s' }}
@@ -82,8 +80,7 @@ const HeroSection = ({ frontImage, title, isCulinary, isPatisserie, isBarista })
             <motion.div
               className="absolute top-[10%] right-[15%] w-16 h-16"
               initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.2 }}
+              animate="visible"
               variants={svgAnim}
               transition={{ duration: 1, delay: 0.2 }}
             >
@@ -98,8 +95,7 @@ const HeroSection = ({ frontImage, title, isCulinary, isPatisserie, isBarista })
             <motion.div
               className="absolute bottom-[30%] left-[10%] w-14 h-14"
               initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.2 }}
+              animate="visible"
               variants={svgAnim}
               transition={{ duration: 1.2, delay: 0.4, repeat: Infinity, repeatType: "reverse" }}
               style={{ animationDuration: '7s' }}
@@ -116,8 +112,7 @@ const HeroSection = ({ frontImage, title, isCulinary, isPatisserie, isBarista })
             <motion.div
               className="absolute top-[20%] right-[8%] w-16 h-16"
               initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.2 }}
+              animate="visible"
               variants={svgAnim}
               transition={{ duration: 1, delay: 0.2 }}
             >
@@ -130,8 +125,7 @@ const HeroSection = ({ frontImage, title, isCulinary, isPatisserie, isBarista })
             <motion.div
               className="absolute bottom-[25%] left-[12%] w-12 h-12"
               initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.2 }}
+              animate="visible"
               variants={svgAnim}
               transition={{ duration: 1.2, delay: 0.4, repeat: Infinity, repeatType: "reverse" }}
               style={{ animationDuration: '15s' }}
@@ -144,35 +138,6 @@ const HeroSection = ({ frontImage, title, isCulinary, isPatisserie, isBarista })
           </>
         )}
       </div>
-      {/* Photo text overlay */}
-      <motion.div
-        className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/30 flex items-center justify-center"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: false, amount: 0.2 }}
-        variants={overlayVariants}
-      >
-        <div className="text-center px-4">
-          <motion.h1
-            className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-lg"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: false, amount: 0.2 }}
-            variants={titleVariants}
-          >
-            {title}
-          </motion.h1>
-          <motion.p
-            className="text-white text-lg md:text-xl max-w-2xl mx-auto"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: false, amount: 0.2 }}
-            variants={subtitleVariants}
-          >
-            Explore and connect with our vibrant student community
-          </motion.p>
-        </div>
-      </motion.div>
     </div>
   );
 };
