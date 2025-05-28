@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import clsx from 'clsx'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate, Link } from 'react-router-dom'
 import navbar from '../datas/navbar.js'
 import { HiOutlineBars3BottomLeft } from "react-icons/hi2";
 
@@ -143,7 +143,20 @@ const Navbar = () => {
                                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                                     {item.dropdown.map((category, catIndex) => (
                                                         <div key={catIndex}>
-                                                            <h3 className="font-bold text-[#003044] mb-3">{category.category}</h3>
+                                                            {category.category === "Diploma Programs" ? (
+                                                                <NavLink 
+                                                                    to="/Diploma"
+                                                                    onClick={() => {
+                                                                        scrollTo(0, 0);
+                                                                        setActiveDropdown(null);
+                                                                    }}
+                                                                    className="font-bold text-[#003044] mb-3 hover:text-[#F1592D] block"
+                                                                >
+                                                                    {category.category}
+                                                                </NavLink>
+                                                            ) : (
+                                                                <h3 className="font-bold text-[#003044] mb-3">{category.category}</h3>
+                                                            )}
                                                             <ul className="space-y-3">
                                                                 {category.items.map((program, progIndex) => (
                                                                     <li key={progIndex}>
@@ -239,7 +252,20 @@ const Navbar = () => {
                                             // Special handling for Programs menu
                                             item.dropdown.map((category, catIndex) => (
                                                 <div key={catIndex} className="mb-3 px-3">
-                                                    <h3 className="font-bold text-[#003044] mb-2">{category.category}</h3>
+                                                    {category.category === "Diploma Programs" ? (
+                                                        <NavLink
+                                                            to="/Diploma"
+                                                            onClick={() => {
+                                                                scrollTo(0, 0);
+                                                                setShowMenu(false);
+                                                            }}
+                                                            className="font-bold text-[#003044] mb-2 hover:text-[#F1592D] block"
+                                                        >
+                                                            {category.category}
+                                                        </NavLink>
+                                                    ) : (
+                                                        <h3 className="font-bold text-[#003044] mb-2">{category.category}</h3>
+                                                    )}
                                                     <ul className="space-y-2 ml-3">
                                                         {category.items.map((program, progIndex) => (
                                                             <li key={progIndex}>
@@ -297,9 +323,16 @@ const Navbar = () => {
                                     </div>
                                 </div>
                             ) : (
-                                <li onClick={() => { scrollTo(0, 0); setShowMenu(false); navigate(item.href) }} key={index}>
+                                <Link 
+                                    to={item.href} 
+                                    onClick={() => { 
+                                        scrollTo(0, 0); 
+                                        setShowMenu(false); 
+                                    }} 
+                                    className="py-2 text-gray-700 hover:text-[#F1592D]"
+                                >
                                     {item.name}
-                                </li>
+                                </Link>
                             )}
                         </div>
                     ))}

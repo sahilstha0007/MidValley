@@ -17,6 +17,7 @@
     "@react-three/fiber": "^9.1.2",
     "@tabler/icons-react": "^3.33.0",
     "@tailwindcss/vite": "^4.1.5",
+    "aos": "^2.3.4",
     "axios": "^1.8.4",
     "clsx": "^2.1.1",
     "flickity": "^3.0.0",

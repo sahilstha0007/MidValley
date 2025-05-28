@@ -1,3 +1,5 @@
+import { href } from "react-router-dom";
+
 const navbar = [
     {
         name: "About",
@@ -46,6 +48,7 @@ const navbar = [
             },
             {
                 category: "Diploma Programs",
+                href: "/Diploma",
                 items: [
                     {
                         name: "Diploma in Food Preparation Culinary Arts Level 2",
