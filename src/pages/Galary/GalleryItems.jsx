@@ -16,11 +16,25 @@ export default function GalleryItem() {
   const [fullscreenImage, setFullscreenImage] = useState(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [showNotification, setShowNotification] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // Detect mobile device by screen width
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     let flickity = null;
-    
-    if (carouselRef.current && item) {
+
+    // Only initialize Flickity if not mobile and images exist
+    if (carouselRef.current && item && !isMobile && item.images.length > 0) {
+      // Destroy any previous Flickity instance before creating a new one
+      if (flickityInstance) {
+        flickityInstance.destroy();
+      }
       flickity = new Flickity(carouselRef.current, {
         cellAlign: 'center',
         contain: true,
@@ -29,25 +43,30 @@ export default function GalleryItem() {
         prevNextButtons: true,
         adaptiveHeight: true,
       });
-      
+
       setFlickityInstance(flickity);
-      
+
       // Handle slide change
       flickity.on('change', (index) => {
         setSelectedImageIndex(index);
       });
     }
-    
+
     // Set loading to false after a short delay
     const timer = setTimeout(() => setIsLoading(false), 800);
-    
+
     return () => {
       clearTimeout(timer);
       if (flickity) {
         flickity.destroy();
       }
+      // Also destroy previous instance if exists
+      if (flickityInstance) {
+        flickityInstance.destroy();
+      }
     };
-  }, [item]);
+    // Add isMobile and item.images as dependencies to re-init Flickity when they change
+  }, [item, isMobile, item?.images?.length]);
   
   // Improve the selectImage function to ensure it properly updates the carousel
   const selectImage = (index) => {
@@ -130,6 +149,19 @@ export default function GalleryItem() {
       transition={{ duration: 0.5 }}
       className="min-h-screen bg-white"
     >
+      <style>
+        {`
+          @media (max-width: 768px) {
+            .carousel {
+              height: 30vh; /* Adjust height for mobile */
+            }
+
+            .thumbnail-grid {
+              grid-template-columns: repeat(2, 1fr); /* Fewer columns on mobile */
+            }
+          }
+        `}
+      </style>
       {/* Fullscreen Image Viewer */}
       <AnimatePresence>
         {fullscreenImage && (
@@ -230,8 +262,6 @@ export default function GalleryItem() {
           {item.date}
         </motion.p>
 
-      
-
         {/* Main Carousel */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -239,20 +269,23 @@ export default function GalleryItem() {
           transition={{ delay: 0.2, duration: 0.7 }}
           className="relative"
         >
-          <div 
-            ref={carouselRef} 
-            className="carousel w-full h-[50vh] md:h-[70vh] max-h-[600px] shadow-2xl rounded-xl overflow-hidden mb-8"
-          >
-            {item.images.map((img, i) => (
-              <div
-                key={i}
-                className="carousel-cell w-full h-full overflow-hidden rounded-xl"
-              >
-                <div className="relative w-full h-full">
+          {!isMobile ? (
+            // Desktop: Flickity carousel
+            <div 
+              ref={carouselRef} 
+              className="carousel w-full h-[50vh] md:h-[80vh] max-h-[1000px] shadow-2xl rounded-xl overflow-hidden mb-8"
+            >
+              {item.images.map((img, i) => (
+                <div
+                  key={i}
+                  className="carousel-cell w-full h-full overflow-hidden rounded-xl flex items-center justify-center bg-black/5 relative" // <-- add relative here
+                >
+                  {/* Remove extra wrapper, ensure img is direct child of carousel-cell */}
                   <img
                     src={img}
                     alt={`${item.title} image ${i + 1}`}
-                    className="w-full h-full object-contain p-4"
+                    className="max-h-full max-w-full object-contain"
+                    style={{ maxHeight: '100%', maxWidth: '100%' }}
                   />
                   <button 
                     onClick={() => toggleFullscreen(img)}
@@ -261,9 +294,33 @@ export default function GalleryItem() {
                     <FaExpand />
                   </button>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            // Mobile: horizontal scrollable images
+            <div className="flex overflow-x-auto space-x-4 w-full h-[30vh] max-h-[400px] mb-8 pb-2">
+              {item.images.map((img, i) => (
+                <div
+                  key={i}
+                  className="flex-shrink-0 w-[80vw] h-full rounded-xl overflow-hidden relative bg-black/5 flex items-center justify-center"
+                  style={{ maxWidth: 400 }}
+                >
+                  <img
+                    src={img}
+                    alt={`${item.title} image ${i + 1}`}
+                    className="max-h-full max-w-full object-contain"
+                    style={{ maxHeight: '100%', maxWidth: '100%' }}
+                  />
+                  <button 
+                    onClick={() => toggleFullscreen(img)}
+                    className="absolute bottom-4 right-4 bg-black/50 text-white p-2 rounded-md hover:bg-black/70 transition-colors"
+                  >
+                    <FaExpand />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
           
           {item.description && (
             <motion.div 
@@ -292,7 +349,7 @@ export default function GalleryItem() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.6 }}
-          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 thumbnail-grid"
         >
           {item.images.map((image, index) => (
             <motion.div
